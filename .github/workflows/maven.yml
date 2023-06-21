@@ -10,9 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        - java: 8
-        additional-maven.args: "-Pjacoco"
-        - java: 11
+        include:
+          - java: 8
+          additional-maven.args: "-Pjacoco"
+          - java: 11
     name: Build with Java ${{ matrix.java }}
     steps:
     - uses: actions/checkout@v2
