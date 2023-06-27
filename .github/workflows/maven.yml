@@ -27,10 +27,6 @@ jobs:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml', '**/*.yml') }}
         restore-keys: ${{ runner.os }}-m2-
-    - name: Install Dependencies
-      run: mvn dependency:resolve
-    - name: Run Tests
-      run: mvn test
-
+    
     - name: Build with Maven
-      run: mvn -f com.mywork.app.mywork/pom.xml clean verify ${{ matrix.additional-maven-args }}
+      run: mvn -f com.mywork.app.mywork/pom.xml dependency:resolve clean verify ${{ matrix.additional-maven-args }}
