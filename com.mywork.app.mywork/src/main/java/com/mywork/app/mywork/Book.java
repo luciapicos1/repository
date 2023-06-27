@@ -3,20 +3,24 @@ package com.mywork.app.mywork;
 public class Book {
 	private int id;
 	private String name;
-	private float price;
+	private float publicPrice;//the price the public pays for the book
+	private float privatePrice;//the price the bookshop pays for the book
 	private int numberOfCopies;
 	private static int lastId=0;
 	
-	  public Book(String name, float price, int numberOfCopies) {
+	  public Book(String name, float price, int numberOfCopies, float privatePrice) {
 		this.id = ++lastId;
 		if(name!=null) {
 			this.name=name;
 		}
 		if(price>0) {
-			this.price = price;
+			this.publicPrice = price;
 		}
 		if (numberOfCopies>=0) {
 			this.numberOfCopies=numberOfCopies;
+		}
+		if(privatePrice>0) {
+			this.privatePrice=privatePrice;
 		}
 	}
   
@@ -30,11 +34,11 @@ public class Book {
 	}
 
 	public float getPrice() {
-		return price;
+		return publicPrice;
 	}
 
 	public void setPrice(float price) {
-		this.price = price;
+		this.publicPrice = price;
 	}
 
 	public int getNumberOfCopies() {
@@ -50,6 +54,32 @@ public class Book {
 		return id;
 	}
 
+	 @Override
+	    public boolean equals(Object obj) {
+	      
+	        if (this == obj) {
+	            return true;
+	        }
+
+	        
+	        if (obj == null || getClass() != obj.getClass()) {
+	            return false;
+	        }
+
+	        
+	        Book otroLibro = (Book) obj;
+	        return name.equals(otroLibro.name);
+	    }
+
+
+	public float getPrivatePrice() {
+		return privatePrice;
+	}
+
+
+	public void setPrivatePrice(float privatePrice) {
+		this.privatePrice = privatePrice;
+	}
 
 	
 }

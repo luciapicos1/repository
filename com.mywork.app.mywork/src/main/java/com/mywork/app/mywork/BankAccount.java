@@ -16,6 +16,11 @@ public class BankAccount {
 		balance+=money;
 		
 	}
+
+	public void payMoney(float f) {
+		balance-=f;
+		
+	}
 	
 	
 }
