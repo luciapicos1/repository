@@ -23,11 +23,11 @@ public class GestInventory {
 	public Boolean newBookInInventory(Book newBook) {
 		if (bank.getBalance() < newBook.getNumberOfCopies() * newBook.getPrivatePrice()) {
 			return false;
-		}
+		}else {
 		inventory.add(newBook);
 		bank.payMoney(newBook.getNumberOfCopies() * newBook.getPrivatePrice());
 		return true;
-
+		}
 	}
 
 	public Object removeBookFromInventory(Book book) {

@@ -56,8 +56,19 @@ public class AppTest {
 		GestInventory invent = new GestInventory(bank);
 		Book book = new Book("A book",15,4,3);
 		invent.newBookInInventory(book);
-		invent.removeBookFromInventory(book);
+		assertEquals(true,invent.removeBookFromInventory(book));
 		assertEquals(false,invent.getInventory().contains(book));
+	}
+	
+	
+	
+	@Test
+	public void testWhenSomeoneBuysTheTransactionGoesOK() {
+		BankAccount bank = new BankAccount(100);
+		GestInventory invent = new GestInventory(bank);
+		Book book = new Book("A book",15,4,0);
+		invent.newBookInInventory(book);
+		assertEquals(true,invent.someoneBuysABook(book));
 	}
 	
 	@Test
@@ -98,6 +109,7 @@ public class AppTest {
 		GestInventory invent = new GestInventory(bank);
 		Book book = new Book("A book",15,1,4);
 		assertEquals(false,invent.removeBookFromInventory(book));
+		
 	}
 	
 	@Test
@@ -106,5 +118,14 @@ public class AppTest {
 		GestInventory invent = new GestInventory(bank);
 		Book book = new Book("A book",15,1,4);
 		assertEquals(false,invent.someoneBuysABook(book));
+	}
+	
+	@Test
+	public void testWhenBalanceIsTheSameAsThePriceOfTheBooksIsAllowed() {
+		BankAccount bank = new BankAccount(10);
+		GestInventory invent = new GestInventory(bank);
+		Book book = new Book("A book",15,2,5);
+		invent.newBookInInventory(book);
+		assertEquals((double)0,(double)bank.getBalance(), (double)0.01);
 	}
 }
