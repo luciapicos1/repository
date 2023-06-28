@@ -1,9 +1,8 @@
 package com.mywork.app.mywork;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class AppTest {
@@ -38,7 +37,7 @@ public class AppTest {
 		GestInventory invent= new GestInventory(bank, null);
 		Book book = new Book("This book",20,3,10);
 		invent.newBookInInventory(book);
-		assertEquals(70,bank.getBalance());
+		assertEquals((double)70,(double)bank.getBalance(),(double)0.01);
 	}
 	
 	@Test
@@ -67,7 +66,7 @@ public class AppTest {
 		Book book = new Book("A book",15,4,0);
 		invent.newBookInInventory(book);
 		invent.someoneBuysABook(book);
-		assertEquals(115,invent.getBank().getBalance());
+		assertEquals((double)115.0,(double)invent.getBank().getBalance(),(double)0.01);
 	}
 	
 	@Test
