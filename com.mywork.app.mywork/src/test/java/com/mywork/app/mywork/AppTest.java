@@ -99,4 +99,12 @@ public class AppTest {
 		Book book = new Book("A book",15,1,4);
 		assertEquals(false,invent.removeBookFromInventory(book));
 	}
+	
+	@Test
+	public void testSomeoneBuysABookThatIsNotInTheInventory() {
+		BankAccount bank = mock(BankAccount.class);
+		GestInventory invent = new GestInventory(bank);
+		Book book = new Book("A book",15,1,4);
+		assertEquals(false,invent.someoneBuysABook(book));
+	}
 }

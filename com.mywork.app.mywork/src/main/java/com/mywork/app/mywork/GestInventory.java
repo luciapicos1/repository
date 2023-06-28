@@ -9,7 +9,6 @@ public class GestInventory {
 	public GestInventory(BankAccount bank) {
 		this.bank = bank;
 		this.inventory = new ArrayList<Book>();
-		
 
 	}
 
@@ -17,16 +16,16 @@ public class GestInventory {
 		return bank;
 	}
 
-	public ArrayList<Book> getInventory(){
+	public ArrayList<Book> getInventory() {
 		return inventory;
 	}
 
 	public Boolean newBookInInventory(Book newBook) {
-		if(bank.getBalance()<newBook.getNumberOfCopies()*newBook.getPrivatePrice()) {
+		if (bank.getBalance() < newBook.getNumberOfCopies() * newBook.getPrivatePrice()) {
 			return false;
 		}
 		inventory.add(newBook);
-		bank.payMoney(newBook.getNumberOfCopies()*newBook.getPrivatePrice());
+		bank.payMoney(newBook.getNumberOfCopies() * newBook.getPrivatePrice());
 		return true;
 
 	}
@@ -34,23 +33,22 @@ public class GestInventory {
 	public Object removeBookFromInventory(Book book) {
 		if (!inventory.contains(book)) {
 			return false;
-		}else {
+		} else {
 			inventory.remove(book);
 			return true;
 		}
 	}
 
-	public void someoneBuysABook(Book book) {
-				if (inventory.contains(book)) {
+	public boolean someoneBuysABook(Book book) {
+		if (inventory.contains(book)) {
 			bank.makeMoney(book.getPrice());
-			for (Book theBook : inventory) {
-				if (book.equals(theBook)) {
-					theBook.setNumberOfCopies(theBook.getNumberOfCopies() - 1);	
-				}
-			}
-			if(book.getNumberOfCopies()==0) {
+			book.setNumberOfCopies(book.getNumberOfCopies()-1);
+			if (book.getNumberOfCopies() == 0) {
 				inventory.remove(book);
 			}
+			return true;
+		}else {
+			return false;
 		}
 	}
 }
