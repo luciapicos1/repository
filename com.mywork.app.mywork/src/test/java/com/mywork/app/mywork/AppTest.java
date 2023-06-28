@@ -26,7 +26,7 @@ public class AppTest {
 	@Test
 	public void testNewBookInInventory() {
 		BankAccount bank = new BankAccount(100);
-		GestInventory invent= new GestInventory(bank, null);
+		GestInventory invent= new GestInventory(bank);
 		Book book = new Book("This book",20,3,3);
 		assertEquals(true,invent.newBookInInventory(book));
 	}
@@ -34,7 +34,7 @@ public class AppTest {
 	@Test 
 	public void testNewBooksPaidWithMoneyFromTheAccount() {
 		BankAccount bank = new BankAccount(100);
-		GestInventory invent= new GestInventory(bank, null);
+		GestInventory invent= new GestInventory(bank);
 		Book book = new Book("This book",20,3,10);
 		invent.newBookInInventory(book);
 		assertEquals((double)70,(double)bank.getBalance(),(double)0.01);
@@ -43,7 +43,7 @@ public class AppTest {
 	@Test
 	public void testNotEnoughMoneyToGetMoreInventory() {
 		BankAccount bank = new BankAccount(10);
-		GestInventory invent= new GestInventory(bank, null);
+		GestInventory invent= new GestInventory(bank);
 		Book book = new Book("This book",20,3,10);
 		assertFalse(invent.newBookInInventory(book));
 		
@@ -52,17 +52,18 @@ public class AppTest {
 	
 	@Test
 	public void testRemoveBookFromInventory() {
-		BankAccount bank = mock(BankAccount.class);
-		GestInventory invent = new GestInventory(bank,null);
+		BankAccount bank = new BankAccount(100);
+		GestInventory invent = new GestInventory(bank);
 		Book book = new Book("A book",15,4,3);
 		invent.newBookInInventory(book);
-		assertEquals(true,invent.removeBookFromInventory(book));
+		invent.removeBookFromInventory(book);
+		assertEquals(false,invent.getInventory().contains(book));
 	}
 	
 	@Test
 	public void testWhenSomeoneBuysTheMoneyIncreases() {
 		BankAccount bank = new BankAccount(100);
-		GestInventory invent = new GestInventory(bank,null);
+		GestInventory invent = new GestInventory(bank);
 		Book book = new Book("A book",15,4,0);
 		invent.newBookInInventory(book);
 		invent.someoneBuysABook(book);
@@ -72,7 +73,7 @@ public class AppTest {
 	@Test
 	public void testWhenSomeoneBuysThereIsACopyLessInInventory() {
 		BankAccount bank = new BankAccount(100);
-		GestInventory invent = new GestInventory(bank,null);
+		GestInventory invent = new GestInventory(bank);
 		Book book = new Book("A book",15,4,4);
 		invent.newBookInInventory(book);
 		invent.someoneBuysABook(book);
@@ -81,12 +82,21 @@ public class AppTest {
 	
 	@Test
 	public void testWhenThereAre0CopiesBookGetDeletedOfInventory() {
-		BankAccount bank = mock(BankAccount.class);
-		GestInventory invent = new GestInventory(bank,null);
+		BankAccount bank = new BankAccount(100);
+		GestInventory invent = new GestInventory(bank);
 		Book book = new Book("A book",15,1,4);
 		invent.newBookInInventory(book);
 		invent.someoneBuysABook(book);
 		assertEquals(false,invent.getInventory().contains(book));
 	}
 	
+
+
+	@Test
+	public void testWhenYouTryToRemoveBookButTheBookIsNotOnTheInventory() {
+		BankAccount bank = mock(BankAccount.class);
+		GestInventory invent = new GestInventory(bank);
+		Book book = new Book("A book",15,1,4);
+		assertEquals(false,invent.removeBookFromInventory(book));
+	}
 }
