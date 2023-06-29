@@ -19,7 +19,7 @@ jobs:
       with:
         java-version: 1.8
     -name: Docker config
-      run: >
+      run:
         sc config docker
         binpath="dockerd.exe --run-service -H tcp://localhost:2375"
     -name: Docker restart
