@@ -138,6 +138,10 @@
 									<name>java-project-java</name>
 									<build>
 										<contextDir>${project.basedir}</contextDir>
+										<args>
+											<jarToCopy>
+												${project.artifactId}-${project.version}.jar</jarToCopy>
+										</args>
 									</build>
 									<run>
 										<wait>
