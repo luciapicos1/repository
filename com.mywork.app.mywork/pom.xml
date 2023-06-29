@@ -63,9 +63,20 @@
 					</configuration>
 				</plugin>
 				<plugin>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>2.4</version>
+					<configuration>
+						<archive>
+							<manifest>
+								<mainClass>com.mywork.app.mywork</mainClass>
+							</manifest>
+						</archive>
+					</configuration>
+				</plugin>
+				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.8.7</version>
+					<version>0.8.8</version>
 					<executions>
 						<execution>
 							<id>prepare-agent</id>
@@ -109,5 +120,58 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>docker</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>io.fabric8</groupId>
+						<artifactId>docker-maven-plugin</artifactId>
+						<version>0.34.1</version>
+						<configuration>
+							<showLogs>true</showLogs>
+							<verbose>build</verbose>
+							<images>
+								<image>
+									<name>java-project-java</name>
+									<build>
+										<contextDir>${project.basedir}</contextDir>
+										<args>
+											<jarToCopy>
+												${project.artifactId}-${project.version}.jar</jarToCopy>
+										</args>
+									</build>
+									<run>
+										<wait>
+											<time>10000</time>
+										</wait>
+									</run>
+								</image>
+							</images>
+						</configuration>
+						<executions>
+							<execution>
+								<id>docker-build-image</id>
+								<phase>package</phase>
+								<goals>
+									<goal>build</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>docker-verify</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>start</goal>
+									<goal>stop</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
