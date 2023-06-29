@@ -63,6 +63,17 @@
 					</configuration>
 				</plugin>
 				<plugin>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>2.4</version>
+					<configuration>
+						<archive>
+							<manifest>
+								<mainClass>com.mywork.app.mywork</mainClass>
+							</manifest>
+						</archive>
+					</configuration>
+				</plugin>
+				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
 					<version>0.8.8</version>
@@ -127,14 +138,10 @@
 									<name>java-project-java</name>
 									<build>
 										<contextDir>${project.basedir}</contextDir>
-										<args>
-											<jarToCopy>
-												${project.artifactId}-${project.version}.jar</jarToCopy>
-										</args>
 									</build>
 									<run>
 										<wait>
-											<time>1000000</time>
+											<time>10000</time>
 										</wait>
 									</run>
 								</image>
