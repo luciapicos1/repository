@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 
 import static org.mockito.Mockito.*;
 
-public class AppTest {
+public class GestInventoryTest {
 
 	@Test
 	public void testIdIsAutomaticallyAssignedAsPositiveNumber() {
@@ -49,6 +49,54 @@ public class AppTest {
 		
 	}
 	
+	@Test
+	public void testBuyMoreCopiesOfABookThatIsInTheInventory() {
+		BankAccount bank = new BankAccount(100);
+		GestInventory invent= new GestInventory(bank);
+		Book book = new Book("This book",20,3,10);
+		invent.newBookInInventory(book);
+		assertTrue(invent.addingMoreCopiesOfABook(book, 3));
+		assertEquals(6, book.getNumberOfCopies());
+		assertEquals((double)40, (double)bank.getBalance(), (double)0.01);
+	}
+	@Test
+	public void testNumberOfCopiesIsNegative() {
+		BankAccount bank = new BankAccount(100);
+		GestInventory invent= new GestInventory(bank);
+		Book book = new Book("This book",20,3,10);
+		invent.newBookInInventory(book);
+		assertEquals(false,invent.addingMoreCopiesOfABook(book, -1));
+		assertEquals(false, invent.addingMoreCopiesOfABook(book, 0));
+	}
+	
+	@Test
+	public void testBuyMoreCopiesButBookIsNotInInventory() {
+		BankAccount bank = new BankAccount(100);
+		GestInventory invent= new GestInventory(bank);
+		Book book = new Book("This book",20,3,10);
+		assertEquals(false, invent.addingMoreCopiesOfABook(book, 2));
+	}
+	
+	@Test
+	public void testBuyMoreCopiesButNotEnoughMoney() {
+		BankAccount bank = new BankAccount(40);
+		GestInventory invent= new GestInventory(bank);
+		Book book = new Book("This book",20,3,10);
+		invent.newBookInInventory(book);
+		assertTrue(bank.getBalance()<book.getPrivatePrice()*2);
+		assertEquals(false,invent.addingMoreCopiesOfABook(book, 2));
+		
+	}
+	
+	@Test
+	public void testBuyMoreCopiesWithJustEnoughMoney() {
+		BankAccount bank = new BankAccount(40);
+		GestInventory invent= new GestInventory(bank);
+		Book book = new Book("This book",20,3,10);
+		invent.newBookInInventory(book);
+		assertTrue(invent.addingMoreCopiesOfABook(book, 1));
+		assertEquals((double)0,(double)bank.getBalance(),(double)0.01);
+	}
 	
 	@Test
 	public void testRemoveBookFromInventory() {
