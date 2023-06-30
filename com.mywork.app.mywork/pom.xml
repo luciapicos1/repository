@@ -49,10 +49,30 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>3.2.0</version>
+					<executions>
+						<execution>
+							<id>add-integration-test-source</id>
+							<phase>generate-test-sources</phase>
+							<goals>
+								<goal>add-test-source</goal>
+							</goals>
+							<configuration>
+								<sources>
+									<source>src/it/java</source>
+								</sources>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>3.0.0-M5</version>
 				</plugin>
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
@@ -107,7 +127,7 @@
 							<param>com.mywork.app.mywork.Book</param>
 						</excludedClasses>
 						<targetTests>
-							<param>com.mywork.app.mywork.AppTest</param>
+							<param>com.mywork.app.mywork.GestInventoryTest</param>
 						</targetTests>
 						<mutators>
 							<mutator>
@@ -116,6 +136,19 @@
 						</mutators>
 						<mutationThreshold>80</mutationThreshold>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>2.22.1</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>integration-test</goal>
+								<goal>verify</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>

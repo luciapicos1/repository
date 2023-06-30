@@ -23,11 +23,31 @@ public class GestInventory {
 	public Boolean newBookInInventory(Book newBook) {
 		if (bank.getBalance() < newBook.getNumberOfCopies() * newBook.getPrivatePrice()) {
 			return false;
-		}else {
-		inventory.add(newBook);
-		bank.payMoney(newBook.getNumberOfCopies() * newBook.getPrivatePrice());
-		return true;
+		} else {
+			inventory.add(newBook);
+			bank.payMoney(newBook.getNumberOfCopies() * newBook.getPrivatePrice());
+			return true;
 		}
+	}
+
+	public Boolean addingMoreCopiesOfABook(Book book, int copies) {
+		if (copies > 0) {
+			if (bank.getBalance() >= book.getPrivatePrice() * copies) {
+				if (inventory.contains(book)) {
+					book.setNumberOfCopies(book.getNumberOfCopies() + copies);
+					bank.payMoney(book.getPrivatePrice() * copies);
+					return true;
+				}else {
+					return false;
+				}
+			}else {
+				return false;
+			}
+
+		} else {
+			return false;
+		}
+		
 	}
 
 	public Object removeBookFromInventory(Book book) {
@@ -42,12 +62,12 @@ public class GestInventory {
 	public boolean someoneBuysABook(Book book) {
 		if (inventory.contains(book)) {
 			bank.makeMoney(book.getPrice());
-			book.setNumberOfCopies(book.getNumberOfCopies()-1);
+			book.setNumberOfCopies(book.getNumberOfCopies() - 1);
 			if (book.getNumberOfCopies() == 0) {
 				inventory.remove(book);
 			}
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
