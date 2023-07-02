@@ -1,6 +1,7 @@
 package com.mywork.app.mywork;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GestInventory {
 	private BankAccount bank;
@@ -8,7 +9,7 @@ public class GestInventory {
 
 	public GestInventory(BankAccount bank) {
 		this.bank = bank;
-		this.inventory = new ArrayList<Book>();
+		this.inventory = new ArrayList<>();
 
 	}
 
@@ -16,7 +17,7 @@ public class GestInventory {
 		return bank;
 	}
 
-	public ArrayList<Book> getInventory() {
+	public List<Book> getInventory() {
 		return inventory;
 	}
 

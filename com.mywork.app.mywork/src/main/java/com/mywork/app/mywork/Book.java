@@ -54,22 +54,7 @@ public class Book {
 		return id;
 	}
 
-	 @Override
-	    public boolean equals(Object obj) {
-	      
-	        if (this == obj) {
-	            return true;
-	        }
-
-	        
-	        if (obj == null || getClass() != obj.getClass()) {
-	            return false;
-	        }
-
-	        
-	        Book otroLibro = (Book) obj;
-	        return name.equals(otroLibro.name);
-	    }
+	 
 
 
 	public float getPrivatePrice() {
