@@ -1,5 +1,5 @@
 # This workflow will build a Java project with Maven
-name: Java CI with Maven in Linux
+name: Java CI with Maven and Docker in Linux
 
 on:
   push:
@@ -8,19 +8,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - java: 8
-            additional-maven.args: "-Pjacoco"
-          - java: 11
-    name: Build with Java ${{ matrix.java }}
+    
+    name: Build in Linux
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK ${{ matrix.java }}
+    - name: Set up JDK 8
       uses: actions/setup-java@v1
       with:
-        java-version: ${{ matrix.java }}
+        java-version: 1.8
     - name: Cache Maven packages
       uses: actions/cache@v2
       with:
@@ -29,4 +24,6 @@ jobs:
         restore-keys: ${{ runner.os }}-m2-
     
     - name: Build with Maven
-      run: mvn -f com.mywork.app.mywork/pom.xml dependency:resolve clean verify ${{ matrix.additional-maven-args }} test -e
+      run: mvn -f com.mywork.app.mywork/pom.xml dependency:resolve clean verify -Pdocker ${{ matrix.additional-maven-args }} test jacoco:report -DrepoToken=$COVERALLS_REPO_TOKEN coveralls:report
+      env: 
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
