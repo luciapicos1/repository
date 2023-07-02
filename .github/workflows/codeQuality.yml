@@ -34,7 +34,7 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml', '**/*.yml') }}
         restore-keys: ${{ runner.os }}-m2-
     - name: Build with Maven and SonarCloud
-      run: mvn -B test jacoco:report verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=luciapicos1_repository
+      run: mvn -B clean build test jacoco:report verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=luciapicos1_repository
       working-directory: com.mywork.app.mywork
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
