@@ -2,7 +2,10 @@ name: Java CI with Maven, Docker, and SonarCloud in Linux
 
 on:
   push:
+    branches:
+      - main
   pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   build:
@@ -16,19 +19,20 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 11
+    - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
     - name: Cache Maven packages
       uses: actions/cache@v2
       with:
-        path: |
-          ~/.m2
-          ~/.sonar/cache
+        path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml', '**/*.yml') }}
         restore-keys: ${{ runner.os }}-m2-
     - name: Build with Maven and SonarCloud
-      run: xvfb-run mvn verify jacoco:report sonar:sonar
-        -Dsonar.organization=luciapicos1
-        -Dsonar.host.url=https://sonarcloud.io
-        -Dsonar.branch.name=$GITHUB_REF
+      run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=luciapicos1_repository
       working-directory: com.mywork.app.mywork
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
