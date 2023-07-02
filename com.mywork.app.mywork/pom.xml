@@ -49,10 +49,30 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>3.2.0</version>
+					<executions>
+						<execution>
+							<id>add-integration-test-source</id>
+							<phase>generate-test-sources</phase>
+							<goals>
+								<goal>add-test-source</goal>
+							</goals>
+							<configuration>
+								<sources>
+									<source>src/it/java</source>
+								</sources>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>3.0.0-M5</version>
 				</plugin>
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
@@ -63,9 +83,20 @@
 					</configuration>
 				</plugin>
 				<plugin>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>2.4</version>
+					<configuration>
+						<archive>
+							<manifest>
+								<mainClass>com.mywork.app.mywork</mainClass>
+							</manifest>
+						</archive>
+					</configuration>
+				</plugin>
+				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.8.7</version>
+					<version>0.8.8</version>
 					<executions>
 						<execution>
 							<id>prepare-agent</id>
@@ -96,7 +127,7 @@
 							<param>com.mywork.app.mywork.Book</param>
 						</excludedClasses>
 						<targetTests>
-							<param>com.mywork.app.mywork.AppTest</param>
+							<param>com.mywork.app.mywork.GestInventoryTest</param>
 						</targetTests>
 						<mutators>
 							<mutator>
@@ -118,8 +149,74 @@
 						</dependency>
 					</dependencies>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>2.22.1</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>integration-test</goal>
+								<goal>verify</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>docker</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>io.fabric8</groupId>
+						<artifactId>docker-maven-plugin</artifactId>
+						<version>0.34.1</version>
+						<configuration>
+							<showLogs>true</showLogs>
+							<verbose>build</verbose>
+							<images>
+								<image>
+									<name>java-project-java</name>
+									<build>
+										<contextDir>${project.basedir}</contextDir>
+										<args>
+											<jarToCopy>
+												${project.artifactId}-${project.version}.jar</jarToCopy>
+										</args>
+									</build>
+									<run>
+										<wait>
+											<time>10000</time>
+										</wait>
+									</run>
+								</image>
+							</images>
+						</configuration>
+						<executions>
+							<execution>
+								<id>docker-build-image</id>
+								<phase>package</phase>
+								<goals>
+									<goal>build</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>docker-verify</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>start</goal>
+									<goal>stop</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
