@@ -182,7 +182,6 @@
 					<version>3.8.0.2131</version>
 				</plugin>
 			</plugins>
-			</plugins>
 		</pluginManagement>
 	</build>
 
