@@ -28,6 +28,7 @@ jobs:
       run: xvfb-run mvn verify jacoco:report sonar:sonar
         -Dsonar.organization=luciapicos1
         -Dsonar.host.url=https://sonarcloud.io
+        -Dsonar.branch.name=$GITHUB_REF
       working-directory: com.mywork.app.mywork
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
