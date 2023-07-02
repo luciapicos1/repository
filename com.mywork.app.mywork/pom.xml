@@ -115,6 +115,7 @@
 					<configuration>
 						<excludes>
 							<exclude>**/Book.class</exclude>
+							<exclude>**/Main.class</exclude>
 						</excludes>
 					</configuration>
 				</plugin>
