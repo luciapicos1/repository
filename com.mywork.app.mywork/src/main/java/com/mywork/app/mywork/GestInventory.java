@@ -2,7 +2,7 @@ package com.mywork.app.mywork;
 
 import java.util.ArrayList;
 
-public class GestInventory {
+public class GestInventory implements GestView{
 	private BankAccount bank;
 	private ArrayList<Book> inventory;
 
@@ -29,7 +29,8 @@ public class GestInventory {
 			return true;
 		}
 	}
-
+	
+	 
 	public Boolean addingMoreCopiesOfABook(Book book, int copies) {
 		if (copies > 0) {
 			if (bank.getBalance() >= book.getPrivatePrice() * copies) {
